@@ -50,6 +50,7 @@ namespace ADO.NET_Module_04_CreateTables
                 new DataColumn("intSimsId",typeof(int)){AllowDBNull=true},
                 new DataColumn("intPartStatus",typeof(int)){AllowDBNull=true}
             });
+
             DataTable TrackComponent = new DataTable("TrackComponent");
             TrackComponent.PrimaryKey = new DataColumn[]
             { new DataColumn("intComponentId"){AllowDBNull=false,Unique=true,AutoIncrement=true,AutoIncrementSeed=0,AutoIncrementStep=1}
