@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Configuration;
 using System.Data.Common;
 using System.Data.OleDb;
+using ADO.NET_Module_04_CreateTables.Model;
 
 namespace ADO.NET_Module_04_CreateTables
 {
@@ -26,10 +27,22 @@ namespace ADO.NET_Module_04_CreateTables
     public partial class MainWindow : Window
     {
         string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
+        private DataBase db = new DataBase();
+       
         public MainWindow()
         {
             InitializeComponent();
+            MessageBox.Show("Итак, данные выгружаются\n Таблички создаются, И бонусом делается сортировка))");
+            var list = db.TrackEvaluationParts.Select(s => new
+            {
+                s.intEvaluationPartId,
+                s.intEvalutionId,
+                s.intMasterPartId,
+                s.floatQuantity,
+                s.floatUnitCostTrack,
+                s.floatUnitCostAvia
+            }).AsQueryable();
+            TrackEvaluationPartList.ItemsSource = list.ToList();
             DataSet ds = new DataSet();
             #region TrackEvaluationPart
             DataTable TrackEvaluationPart = new DataTable("TrackEvaluationPart");
@@ -123,7 +136,6 @@ namespace ADO.NET_Module_04_CreateTables
             });
             #endregion
             DataTable[] tables = new DataTable[] { TrackComponent, TrackEvaluationPart, PMChecklistPart };
-            
             TrackEvaluationPart.Rows.Add(SetDataRow_TrackEvaluationPart(ref TrackEvaluationPart));
             TrackComponent.Rows.Add(SetDataRow_TrackComponent(ref TrackComponent));
             PMChecklistPart.Rows.Add(SetDataRow_PMChecklistPart(ref PMChecklistPart));
@@ -131,21 +143,14 @@ namespace ADO.NET_Module_04_CreateTables
             try
             {
 
+                var a = ds.Tables["TrackComponent"].Rows[0];
 
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter("Select * from TrackEvaluationPart", conn);
-                    da.Fill(ds);
-                    var a = ds.Tables["TrackComponent"].Rows[0];
-                }
             }
             catch (Exception ex)
             {
-
-
+                ErrorOrSuccesTextBlock.Text += ex.Message;
             }
-        
+
 
         }
         #region Здесь Загружаем данные в таблички
@@ -201,5 +206,82 @@ namespace ADO.NET_Module_04_CreateTables
             return dr;
         }
         #endregion
+
+        private void GetSetDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            TrackEvaluationPartList.Visibility = Visibility.Visible;
+            var list = db.TrackEvaluationParts.Select(s => new
+            {
+                s.intEvaluationPartId,
+                s.intEvalutionId,
+                s.intMasterPartId,
+                s.floatQuantity,
+                s.floatUnitCostTrack,
+                s.floatUnitCostAvia
+            }).AsQueryable();
+            TrackEvaluationPartList.ItemsSource = list.ToList();
+            OrderBy_ButRandomField.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Random rnd = new Random();
+        
+            int rand = rnd.Next(0, 4);
+            if (rand == 0)
+            {
+                var list = db.TrackEvaluationParts.Select(s => new
+                {
+                    s.intEvaluationPartId,
+                    s.intEvalutionId,
+                    s.intMasterPartId,
+                    s.floatQuantity,
+                    s.floatUnitCostTrack,
+                    s.floatUnitCostAvia
+                }).OrderByDescending(o => o.intEvaluationPartId);
+                TrackEvaluationPartList.ItemsSource = list.ToList();
+            }
+            else if (rand == 1)
+            {
+                var list = db.TrackEvaluationParts.Select(s => new
+                {
+                    s.intEvaluationPartId,
+                    s.intEvalutionId,
+                    s.intMasterPartId,
+                    s.floatQuantity,
+                    s.floatUnitCostTrack,
+                    s.floatUnitCostAvia
+                }).OrderByDescending(o => o.intEvaluationPartId);
+                TrackEvaluationPartList.ItemsSource = list.ToList();
+
+            }
+            else if (rand == 2)
+            {
+                var list = db.TrackEvaluationParts.Select(s => new
+                {
+                    s.intEvaluationPartId,
+                    s.intEvalutionId,
+                    s.intMasterPartId,
+                    s.floatQuantity,
+                    s.floatUnitCostTrack,
+                    s.floatUnitCostAvia
+                }).OrderBy(o => o.intMasterPartId);
+                TrackEvaluationPartList.ItemsSource = list.ToList();
+            }
+            else if (rand == 3)
+            {
+                var list = db.TrackEvaluationParts.Select(s => new
+                {
+                    s.intEvaluationPartId,
+                    s.intEvalutionId,
+                    s.intMasterPartId,
+                    s.floatQuantity,
+                    s.floatUnitCostTrack,
+                    s.floatUnitCostAvia
+                }).OrderByDescending(o => o.floatUnitCostAvia);
+                TrackEvaluationPartList.ItemsSource = list.ToList();
+            }
+           
+        }
     }
 }

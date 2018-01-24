@@ -7,6 +7,31 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+
+        </Grid.RowDefinitions>
+
+        <Button Content="OrderBy_ButRandomField" Click="Button_Click" Grid.Row="1" x:Name="OrderBy_ButRandomField" Visibility="Hidden"></Button>
+        <Button Content="GetDataAndCreateTablesDynamically" x:Name="GetSetDataButton" Click="GetSetDataButton_Click"></Button>
+        <TextBlock x:Name="ErrorOrSuccesTextBlock" Grid.Row="3" Margin="3" Background="AliceBlue"></TextBlock>
+
+        <ListView x:Name="TrackEvaluationPartList" Grid.Row="2" Visibility="Hidden">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="intEvaluationPartId" DisplayMemberBinding="{Binding Path=intEvaluationPartId}"></GridViewColumn>
+                        <GridViewColumn Header="intEvaluationId" DisplayMemberBinding="{Binding Path=intEvalutionId}"></GridViewColumn>
+                        <GridViewColumn Header="intMasterPartId" DisplayMemberBinding="{Binding Path=intMasterPartId}"></GridViewColumn>
+                        <GridViewColumn Header="floatQuantity" DisplayMemberBinding="{Binding Path=floatQuantity}"></GridViewColumn>
+                        <GridViewColumn Header="floatUnitCostTrack" DisplayMemberBinding="{Binding Path=floatUnitCostTrack}"></GridViewColumn>
+                        <GridViewColumn Header="floatUnitCostAvia" DisplayMemberBinding="{Binding Path=floatUnitCostAvia}"></GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
